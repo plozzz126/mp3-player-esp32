@@ -2,6 +2,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7789.h>
 
+#include "display.h"
 #include "config.h"
 
 SPIClass tftSPI(FSPI);
