@@ -8,6 +8,9 @@
 SPIClass sdSPI(FSPI);
 SdFat sd;
 
+String mp3Files[100];
+int mp3Count = 0;
+
 bool initSD()
 {
     sdSPI.begin(
@@ -31,19 +34,15 @@ bool initSD()
     }
 
     Serial.println("SD OK");
-    return true;
-}
 
-String findFirstMP3()
-{
-    Serial.println("Searching MP3...");
+    mp3Count = 0;
 
     FsFile dir;
 
     if(!dir.open("/music"))
     {
         Serial.println("/music not found");
-        return "";
+        return false;
     }
 
     FsFile file;
@@ -53,21 +52,41 @@ String findFirstMP3()
     {
         file.getName(filename, sizeof(filename));
 
-        Serial.print("FOUND FILE: ");
-        Serial.println(filename);
-
         String name = String(filename);
 
+        if(name.endsWith(".mp3") || name.endsWith(".MP3"))
+        {
+            mp3Files[mp3Count] = name;
+
+            Serial.print("MP3: ");
+            Serial.println(name);
+
+            mp3Count++;
+
+            if(mp3Count >= 100)
+                break;
+        }
+
         file.close();
-
-        dir.close();
-
-        return name;
     }
 
     dir.close();
 
-    Serial.println("Folder empty");
+    Serial.print("TOTAL MP3: ");
+    Serial.println(mp3Count);
 
-    return "";
+    return true;
+}
+
+int getMP3Count()
+{
+    return mp3Count;
+}
+
+String getMP3Name(int index)
+{
+    if(index < 0 || index >= mp3Count)
+        return "";
+
+    return mp3Files[index];
 }

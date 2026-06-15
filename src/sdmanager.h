@@ -3,4 +3,6 @@
 #include <Arduino.h>
 
 bool initSD();
-String findFirstMP3();
+
+int getMP3Count();
+String getMP3Name(int index);
