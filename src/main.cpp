@@ -1,5 +1,6 @@
 #include <Arduino.h>
 
+#include "audio.h"
 #include "sdmanager.h"
 #include "display.h"
 #include "buttons.h"
@@ -13,6 +14,7 @@ bool inTrackScreen = false;
 
 int trackIndex = 0;
 int trackOffset = 0;
+
 
 
 
@@ -84,11 +86,15 @@ void showTrackScreen()
 
 void setup()
 {
+
 Serial.begin(115200);
+Serial.printf("Flash: %u MB\n", ESP.getFlashChipSize() / 1024 / 1024);
+Serial.printf("PSRAM: %u bytes\n", ESP.getPsramSize());
 
 
 initButtons();
 initDisplay();
+initAudio();
 
 if(initSD())
     Serial.println("SD initialized");
@@ -102,6 +108,8 @@ drawMenu();
 
 void loop()
 {
+    audioLoop();
+
 if(millis() - lastPress < 200)
 return;
     
@@ -198,6 +206,13 @@ else
         if(okPressed())
         {
             inTrackScreen = true;
+
+            String path = getMP3Name(trackIndex);
+
+            Serial.print("PLAYING: ");
+            Serial.println(path);
+
+            playMP3(path.c_str());
 
             showTrackScreen();
 

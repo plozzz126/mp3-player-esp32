@@ -30,3 +30,7 @@
 #define BTN_DOWN    2
 
 #define BTN_BACK    41
+
+#define I2S_BCLK 18
+#define I2S_LRC  16
+#define I2S_DIN  17

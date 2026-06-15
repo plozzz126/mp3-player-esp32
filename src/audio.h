@@ -1,5 +1,7 @@
 #pragma once
 
 void initAudio();
-void playMP3(const char* path);
 void audioLoop();
+void playMP3(const char* path);
+void stopAudio();
+bool isPlaying();

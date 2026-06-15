@@ -53,10 +53,12 @@ bool initSD()
         file.getName(filename, sizeof(filename));
 
         String name = String(filename);
+        String fullPath = "/music/";
+        fullPath += name;
 
         if(name.endsWith(".mp3") || name.endsWith(".MP3"))
         {
-            mp3Files[mp3Count] = name;
+            mp3Files[mp3Count] = fullPath;
 
             Serial.print("MP3: ");
             Serial.println(name);
